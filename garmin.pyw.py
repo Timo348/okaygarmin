@@ -3,7 +3,7 @@ import keyboard
 from rapidfuzz import fuzz
 import time
 import subprocess  
-import simpleaudio as sa  # playsound entfernt, simpleaudio hinzugefügt
+import simpleaudio as sa
 
 wake_words = {
     "okay garmin video speichern": lambda: keyboard.press_and_release('alt+f10'),
@@ -14,26 +14,11 @@ wake_words = {
         keyboard.write('/gamemode creative'),
         keyboard.press_and_release('enter')
     ),
-    "okay garmin ab zu Leon": lambda: (
-        keyboard.press_and_release('t'),
-        time.sleep(0.5),
-        keyboard.write('/tp Knuusper Einfachunbekannt'),
-        keyboard.press_and_release('enter')
-    ),
-    "okay garmin hol Leon zu mir": lambda: (
-        keyboard.press_and_release('t'),
-        time.sleep(0.5),
-        keyboard.write('/tp Einfachunbekannt Knuusper'),
-        keyboard.press_and_release('enter')
-    ),
     "okay garmin ab in die Kluft": lambda: subprocess.Popen(
         ['explorer', r'C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Riot Games\League of Legends.lnk']
     ),
-    "okay garmin starte Valorant": lambda: subprocess.Popen(
-        ['explorer', r'C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Riot Games\Valorant.lnk']
-    ),
-    "okay garmin stream starten": lambda: keyboard.press_and_release('ctrl+shift+0'),
-    "okay garmin raus hier": lambda: keyboard.press_and_release('ctrl+shift+9'),
+    "okay garmin stream starten": lambda: keyboard.press_and_release('ctrl+shift+0'), # Mein eigener Shortcut um auf Dc Übertragung zu starten
+    "okay garmin raus hier": lambda: keyboard.press_and_release('ctrl+shift+9'), # Genau das gleiche wie oben
     "okay garmin pc ausschalten": lambda: subprocess.Popen(
         ["shutdown", "/s", "/t", "0"], shell=True
     ),
@@ -59,7 +44,7 @@ while True:
 
     try:
         text = recognizer.recognize_google(audio, language="de-DE")
-        print(f"Erkannt: {text}")
+        print(f"Erkannt: {text}") # Diese Zeile auskommentieren wenn man keine Logs möchte (weniger ram nutzung)
 
         for wake_word, action in wake_words.items():
             similarity = fuzz.ratio(text.lower(), wake_word)
@@ -75,3 +60,5 @@ while True:
         pass
     except sr.RequestError as e:
         print(f"Fehler bei der Spracherkennung: {e}")
+
+# Wenn man das Skript nicht sehen möchte dateiendung .pyw wenn man sie möchte endung .py
